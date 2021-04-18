@@ -87,7 +87,34 @@ function entryCalculator(entrants) {
 //   animals.forEach(animal => myObj[animal.location] = animals.find((ani) => ani.location === animal.location).name)
 //   return myObj
 // }
-// console.log(animalMap())
+const fullSpecies = () => {
+  const myObj = animals.reduce((acc , curr) => {
+    const { location } = curr;
+    return {...acc,
+    [location]: animals.filter(animal => animal.location === location).map(arr => arr.name)}
+  }, {})
+  return myObj;
+}
+function animalMap(options) {
+  const { includeNames, sorted, sex } = options;
+  if (typeof options === 'undefined') return fullSpecies();
+  if (includeNames === true) {
+    return animals.reduce((acc , curr) => {
+      const { location } = curr;
+      return {...acc,
+      [location]: animals.filter(animal => animal.location === location).map(a => a)
+      .reduce((ac, cr) => {
+        // const { name } = cr;
+        return {
+          ...ac,
+          [cr.name]: cr.residents.map(names => names.name)
+        }
+      }, {})}
+    }, {})
+  }
+
+}
+console.log(animalMap({includeNames: true}))
 
 // Para resolver o requisito 10(schedule) eu tive que buscar orientação com o meu colega Matheus bodra, pois, tive difilculdade na implementação. link:https://github.com/tryber/sd-010-b-project-zoo-functions/pull/81/commits/8418cfc7aa598d1575dcc4dee52a3a2f90e7ef56
 
